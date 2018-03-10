@@ -28,10 +28,10 @@ class TmdbApiService {
         }
     }
 
-    fun getUpcommingMovies(): Observable<List<Movie>> {
+    fun getUpcommingMovies(page: Long): Observable<List<Movie>> {
         return getGenres()
                 .flatMap { genres ->
-                    tmdbApi.upcomingMovies(TmdbApi.API_KEY, TmdbApi.DEFAULT_LANGUAGE, 1, TmdbApi.DEFAULT_REGION)
+                    tmdbApi.upcomingMovies(TmdbApi.API_KEY, TmdbApi.DEFAULT_LANGUAGE, page, TmdbApi.DEFAULT_REGION)
                         .map {
                             it.results.map { movie ->
                                 movie.copy(genres = genres.filter { movie.genreIds?.contains(it.id) == true })
