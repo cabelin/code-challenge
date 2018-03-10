@@ -1,9 +1,9 @@
-package com.arctouch.codechallenge.splash
+package com.arctouch.codechallenge.ui.splash
 
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import com.arctouch.codechallenge.home.HomeActivity
+import com.arctouch.codechallenge.ui.home.HomeActivity
 
 class SplashActivity : AppCompatActivity() {
 
