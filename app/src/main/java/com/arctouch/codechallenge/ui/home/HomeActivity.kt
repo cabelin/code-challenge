@@ -2,13 +2,11 @@ package com.arctouch.codechallenge.ui.home
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.View
 import com.arctouch.codechallenge.R
 import com.arctouch.codechallenge.data.services.TmdbApiService
-import com.arctouch.codechallenge.ui.BaseActivity
 import com.arctouch.codechallenge.model.Movie
+import com.arctouch.codechallenge.ui.BaseActivity
 import com.arctouch.codechallenge.util.InfiniteScroll
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -21,7 +19,7 @@ class HomeActivity : BaseActivity() {
 
     private val movies: MutableList<Movie> = mutableListOf()
 
-    private lateinit var homeAdapter: HomeAdapter
+    private lateinit var movieAdapter: MovieAdapter
 
     private val compositeDisposable: CompositeDisposable by lazy { CompositeDisposable() }
 
@@ -30,22 +28,16 @@ class HomeActivity : BaseActivity() {
         setContentView(R.layout.home_activity)
 
         configureRecyclerView()
+        loadMovies(1)
     }
 
     private fun configureRecyclerView() {
-        homeAdapter = HomeAdapter(movies = this.movies)
+        movieAdapter = MovieAdapter(movies = this.movies, itemClick = this::navigateToMovieDetails)
+        recyclerView.adapter = movieAdapter
 
-        recyclerView.adapter = homeAdapter
         val linearLayoutManager = LinearLayoutManager(this)
-
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.addOnScrollListener(InfiniteScroll(linearLayoutManager, this::loadMovies))
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        loadMovies(1)
     }
 
     private fun loadMovies(page: Int) {
@@ -57,7 +49,7 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun displayMovies(movies: List<Movie>) {
-        homeAdapter.addAllMovies(movies)
+        movieAdapter.addAllMovies(movies)
         progressBar.visibility = View.GONE
     }
 

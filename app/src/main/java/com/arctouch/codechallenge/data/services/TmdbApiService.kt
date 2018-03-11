@@ -40,4 +40,8 @@ class TmdbApiService {
                 }
     }
 
+    fun getMovie(movieId: Long): Observable<Movie> {
+        return tmdbApi.movie(movieId, TmdbApi.API_KEY, TmdbApi.DEFAULT_LANGUAGE)
+    }
+
 }
