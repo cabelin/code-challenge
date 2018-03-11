@@ -19,29 +19,29 @@ class TmdbApiService {
         return if(loadedGenres) {
             Observable.just(Cache.genres)
         } else {
-            tmdbApi.genres(TmdbApi.API_KEY, TmdbApi.DEFAULT_LANGUAGE)
-                    .map { it.genres }
-                    .doAfterNext { genres
-                        Cache.cacheGenres(genres)
-                        loadedGenres = true
-                    }
+            tmdbApi.genres()
+                .map { it.genres }
+                .doAfterNext { genres
+                    Cache.cacheGenres(genres)
+                    loadedGenres = true
+                }
         }
     }
 
     fun getUpcommingMovies(page: Long): Observable<List<Movie>> {
         return getGenres()
-                .flatMap { genres ->
-                    tmdbApi.upcomingMovies(TmdbApi.API_KEY, TmdbApi.DEFAULT_LANGUAGE, page, TmdbApi.DEFAULT_REGION)
-                        .map {
-                            it.results.map { movie ->
-                                movie.copy(genres = genres.filter { movie.genreIds?.contains(it.id) == true })
-                            }
+            .flatMap { genres ->
+                tmdbApi.upcomingMovies(page)
+                    .map {
+                        it.results.map { movie ->
+                            movie.copy(genres = genres.filter { movie.genreIds?.contains(it.id) == true })
                         }
-                }
+                    }
+            }
     }
 
     fun getMovie(movieId: Long): Observable<Movie> {
-        return tmdbApi.movie(movieId, TmdbApi.API_KEY, TmdbApi.DEFAULT_LANGUAGE)
+        return tmdbApi.movie(movieId)
     }
 
 }
