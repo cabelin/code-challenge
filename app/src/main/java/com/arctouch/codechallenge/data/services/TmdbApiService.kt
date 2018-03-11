@@ -2,7 +2,6 @@ package com.arctouch.codechallenge.data.services
 
 import com.arctouch.codechallenge.data.Cache
 import com.arctouch.codechallenge.data.Cache.genres
-import com.arctouch.codechallenge.data.RetrofitInitializer
 import com.arctouch.codechallenge.data.api.TmdbApi
 import com.arctouch.codechallenge.model.Genre
 import com.arctouch.codechallenge.model.Movie
@@ -10,8 +9,7 @@ import io.reactivex.Observable
 
 class TmdbApiService {
 
-    private val retrofitInitializer: RetrofitInitializer = RetrofitInitializer()
-    private val tmdbApi: TmdbApi = retrofitInitializer.tmdbApi
+    private val tmdbApi: TmdbApi = TmdbApi.create()
 
     private var loadedGenres = false
 

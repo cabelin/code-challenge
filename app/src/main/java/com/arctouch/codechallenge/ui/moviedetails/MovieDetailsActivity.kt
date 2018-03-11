@@ -3,6 +3,7 @@ package com.arctouch.codechallenge.ui.moviedetails
 import android.os.Bundle
 import android.view.View
 import com.arctouch.codechallenge.R
+import com.arctouch.codechallenge.data.ServiceProvider
 import com.arctouch.codechallenge.data.services.TmdbApiService
 import com.arctouch.codechallenge.model.Movie
 import com.arctouch.codechallenge.ui.BaseActivity
@@ -20,7 +21,9 @@ class MovieDetailsActivity : BaseActivity() {
         const val EXTRA_PARAM_ID = "movie:_id"
     }
 
-    private val apiService: TmdbApiService by lazy { TmdbApiService() }
+    private val apiService: TmdbApiService by lazy {
+        ServiceProvider.provideTmdbApiService()
+    }
 
     private lateinit var movie: Movie
 

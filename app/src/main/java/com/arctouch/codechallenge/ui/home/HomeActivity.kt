@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.arctouch.codechallenge.R
+import com.arctouch.codechallenge.data.ServiceProvider
 import com.arctouch.codechallenge.data.services.TmdbApiService
 import com.arctouch.codechallenge.model.Movie
 import com.arctouch.codechallenge.ui.BaseActivity
@@ -15,7 +16,9 @@ import kotlinx.android.synthetic.main.home_activity.*
 
 class HomeActivity : BaseActivity() {
 
-    private val apiService: TmdbApiService by lazy { TmdbApiService() }
+    private val apiService: TmdbApiService by lazy {
+        ServiceProvider.provideTmdbApiService()
+    }
 
     private val movies: MutableList<Movie> = mutableListOf()
 
