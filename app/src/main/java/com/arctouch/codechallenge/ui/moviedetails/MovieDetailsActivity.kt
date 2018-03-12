@@ -3,27 +3,21 @@ package com.arctouch.codechallenge.ui.moviedetails
 import android.os.Bundle
 import android.view.View
 import com.arctouch.codechallenge.R
-import com.arctouch.codechallenge.data.ServiceProvider
-import com.arctouch.codechallenge.data.services.TmdbApiService
 import com.arctouch.codechallenge.model.Movie
 import com.arctouch.codechallenge.ui.BaseActivity
 import com.arctouch.codechallenge.util.MovieImageUrlBuilder
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.RequestOptions
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.movie_details_activity.*
 
-class MovieDetailsActivity : BaseActivity() {
+class MovieDetailsActivity : BaseActivity(), MovieDetailsContract.View {
 
     companion object {
         const val EXTRA_PARAM_ID = "movie:_id"
     }
 
-    private val apiService: TmdbApiService by lazy {
-        ServiceProvider.provideTmdbApiService()
-    }
+    private lateinit var presenter: MovieDetailsContract.Presenter
 
     private lateinit var movie: Movie
 
@@ -35,21 +29,15 @@ class MovieDetailsActivity : BaseActivity() {
 
         val movieId = intent.getLongExtra(EXTRA_PARAM_ID, 0)
 
-        loadMovie(movieId)
+        presenter = MovieDetailsPresenter(this)
+        presenter.loadMovie(movieId)
     }
 
     override fun isHomeAsUpToBack(): Boolean {
         return true
     }
 
-    private fun loadMovie(movieId: Long) {
-        apiService.getMovie(movieId)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(this::displayMovieData)
-    }
-
-    private fun displayMovieData(movie: Movie) {
+    override fun displayMovieData(movie: Movie) {
         this.movie = movie
 
         titleTextView.text = movie.title
