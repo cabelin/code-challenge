@@ -2,6 +2,7 @@ package com.arctouch.codechallenge.data.api
 
 import com.arctouch.codechallenge.model.GenreResponse
 import com.arctouch.codechallenge.model.Movie
+import com.arctouch.codechallenge.model.SearchMoviesResponse
 import com.arctouch.codechallenge.model.UpcomingMoviesResponse
 import io.reactivex.Observable
 import okhttp3.HttpUrl
@@ -54,6 +55,12 @@ interface TmdbApi {
     fun upcomingMovies(
         @Query("page") page: Long
     ): Observable<UpcomingMoviesResponse>
+
+    @GET("search/movie")
+    fun searchMovies(
+            @Query("query") query: String,
+            @Query("page") page: Long
+    ): Observable<SearchMoviesResponse>
 
     @GET("movie/{id}")
     fun movie(

@@ -44,9 +44,15 @@ class MovieAdapter(private val movies: MutableList<Movie>,
         notifyDataSetChanged()
     }
 
+    fun removeAllMovies() {
+        this.movies.clear()
+        notifyDataSetChanged()
+    }
+
     override fun getItemCount() = movies.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(movies[position])
     }
+
 }

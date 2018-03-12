@@ -13,6 +13,13 @@ data class UpcomingMoviesResponse(
     @Json(name = "total_results") val totalResults: Int
 )
 
+data class SearchMoviesResponse(
+    val page: Int,
+    val results: List<Movie>,
+    @Json(name = "total_pages") val totalPages: Int,
+    @Json(name = "total_results") val totalResults: Int
+)
+
 data class Movie(
     val id: Long,
     val title: String,

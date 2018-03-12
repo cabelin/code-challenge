@@ -26,7 +26,7 @@ class TmdbApiService {
         }
     }
 
-    fun getUpcommingMovies(page: Long): Observable<List<Movie>> {
+    fun getUpcommingMovies(page: Long = 1): Observable<List<Movie>> {
         return getGenres()
             .flatMap { genres ->
                 tmdbApi.upcomingMovies(page)
@@ -40,6 +40,18 @@ class TmdbApiService {
 
     fun getMovie(movieId: Long): Observable<Movie> {
         return tmdbApi.movie(movieId)
+    }
+
+    fun getMoviesByName(movieName: String, page: Long = 1): Observable<List<Movie>> {
+        return getGenres()
+            .flatMap { genres ->
+                tmdbApi.searchMovies(movieName, page)
+                    .map {
+                        it.results.map { movie ->
+                            movie.copy(genres = genres.filter { movie.genreIds?.contains(it.id) == true })
+                        }
+                    }
+            }
     }
 
 }
